@@ -14,8 +14,8 @@ Add metaboxes on your WordPress Admin Dashboard for developer info and TODO Mana
 
 This plugin allows developers to have at a glance information directly on the WordPress Admin Dashboard. From basics like domain and server IP to more advanced like registrar, expiration date, and page speed timing. Additionally, a second metabox is available which finds TODO comments in the theme and organizes them. It also allows for categorizing and prioritizing TODO tasks.
 
-[Documentation for the TODO Manager](http://gearside.com/wordpress-dashboard-todo-manager/)
-[Additional documentation for the Developer Information Metabox](http://gearside.com/wordpress-developer-information-dashboard/)
+- [Documentation for the TODO Manager](http://gearside.com/wordpress-dashboard-todo-manager/)
+- [Additional documentation for the Developer Information Metabox](http://gearside.com/wordpress-developer-information-dashboard/)
 
 == Installation ==
 
@@ -27,13 +27,13 @@ This plugin allows developers to have at a glance information directly on the Wo
 = Do I need to change any settings to customize this plugin for my site? =
 No.
 
-= Do I need to use a special syntax for TODOs?
+= Do I need to use a special syntax for TODOs? =
 This plugin looks for "@TODO", so you won't need to change anything if that's how you do it already. Category and Priority are optional and should be after the @TODO. Example: //@TODO "Graphics" 3: Lorem ipsum dolor sit amet.
 
-= Can I hide @TODO tasks from the manager?
+= Can I hide @TODO tasks from the manager? =
 Yes! Use a priority of 0 to hide them from the @TODO Manager.
 
-=One of the detected developer info items is incorrect or broken.
+= One of the detected developer info items is incorrect or broken. =
 The developer info does it's best to detect things that aren't consistent across web servers, so there may be certain instances where something is incorrect. If data is known to be incorrect, the metabox will hide it (which is why you may not see an domain expiration date). If something is blatantly incorrect or broken, contact me!
 
 
