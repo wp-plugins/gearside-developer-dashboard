@@ -88,7 +88,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 		$todo_dirpath = get_template_directory();
 		$todo_file_counter = 0;
 		$todo_instance_counter = 0;
-		foreach ( glob_r($todo_dirpath . '/*') as $todo_file ) {
+		foreach ( gearside_glob_r($todo_dirpath . '/*') as $todo_file ) {
 			$todo_counted = 0;
 			$todo_hidden = 0;
 			if ( is_file($todo_file) ) {
@@ -101,7 +101,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 			    $todo_skipExtensions = array('.jpg', '.jpeg', '.png', '.gif', '.ico', '.tiff', '.psd', '.ai',  '.apng', '.bmp', '.otf', '.ttf', '.ogv', '.flv', '.fla', '.mpg', '.mpeg', '.avi', '.mov', '.woff', '.eot', '.mp3', '.mp4', '.wmv', '.wma', '.aiff', '.zip', '.zipx', '.rar', '.exe', '.dmg', '.swf', '.pdf', '.pdfx', '.pem');
 			    $todo_skipFilenames = array('README.md', 'nebula_admin_functions.php', 'error_log', 'Mobile_Detect.php', 'class-tgm-plugin-activation.php');
 
-			    if ( !contains(basename($todo_file), $todo_skipExtensions) && !contains(basename($todo_file), $todo_skipFilenames) ) {
+			    if ( !gearside_contains(basename($todo_file), $todo_skipExtensions) && !gearside_contains(basename($todo_file), $todo_skipFilenames) ) {
 				    foreach ( file($todo_file) as $todo_lineNumber => $todo_line ) {
 						$todo_hidden = 0;
 
@@ -209,7 +209,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 			echo 'No active @TODO tasks!';
 			echo '<style>.todo_results {height: auto !important; resize: none;}</style>';
 		}
-		echo '</div><!--/todo_results-->';
+		echo '</div><!--/todo_results--></div>';
 	}
 
 
@@ -227,12 +227,12 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 	}
 	function dashboard_developer_info() {
 
-		$whois = getwhois(nebula_url_components('sld'), ltrim(nebula_url_components('tld'), '.'));
+		$whois = getwhois(gearside_url_components('sld'), ltrim(gearside_url_components('tld'), '.'));
 
 		//Get Expiration Date
-		if ( contains($whois, array('Registrar Registration Expiration Date: ')) ) {
+		if ( gearside_contains($whois, array('Registrar Registration Expiration Date: ')) ) {
 			$domain_exp_detected = substr($whois, strpos($whois, "Registrar Registration Expiration Date: ")+40, 10);
-		} elseif ( contains($whois, array('Registry Expiry Date: ')) ) {
+		} elseif ( gearside_contains($whois, array('Registry Expiry Date: ')) ) {
 			$domain_exp_detected = substr($whois, strpos($whois, "Registry Expiry Date: ")+22, 10);
 		} else {
 			$domain_exp_detected = '';
@@ -245,15 +245,15 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 
 		//Get Registrar URL
-		if ( contains($whois, array('Registrar URL: ')) && contains($whois, array('Updated Date: ')) ) {
+		if ( gearside_contains($whois, array('Registrar URL: ')) && gearside_contains($whois, array('Updated Date: ')) ) {
 			$domain_registrar_url_start = strpos($whois, "Registrar URL: ")+15;
 			$domain_registrar_url_stop = strpos($whois, "Updated Date: ")-$domain_registrar_url_start;
 			$domain_registrar_url = substr($whois, $domain_registrar_url_start, $domain_registrar_url_stop);
-		} elseif ( contains($whois, array('Registrar URL: ')) && contains($whois, array('Update Date: ')) ) {
+		} elseif ( gearside_contains($whois, array('Registrar URL: ')) && gearside_contains($whois, array('Update Date: ')) ) {
 			$domain_registrar_url_start = strpos($whois, "Registrar URL: ")+15;
 			$domain_registrar_url_stop = strpos($whois, "Update Date: ")-$domain_registrar_url_start;
 			$domain_registrar_url = substr($whois, $domain_registrar_url_start, $domain_registrar_url_stop);
-		} elseif ( contains($whois, array('URL: ')) && contains($whois, array('Relevant dates:')) ) { //co.uk
+		} elseif ( gearside_contains($whois, array('URL: ')) && gearside_contains($whois, array('Relevant dates:')) ) { //co.uk
 			$domain_registrar_url_start = strpos($whois, "URL: ")+5;
 			$domain_registrar_url_stop = strpos($whois, "Relevant dates: ")-$domain_registrar_url_start;
 			$domain_registrar_url = substr($whois, $domain_registrar_url_start, $domain_registrar_url_stop);
@@ -263,27 +263,27 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 		//Get Registrar Name
 		$domain_registrar_start = '';
 		$domain_registrar_stop = '';
-		if ( contains($whois, array('Registrar: ')) && contains($whois, array('Sponsoring Registrar IANA ID:')) ) {
+		if ( gearside_contains($whois, array('Registrar: ')) && gearside_contains($whois, array('Sponsoring Registrar IANA ID:')) ) {
 			$domain_registrar_start = strpos($whois, "Registrar: ")+11;
 			$domain_registrar_stop = strpos($whois, "Sponsoring Registrar IANA ID:")-$domain_registrar_start;
 			$domain_registrar = substr($whois, $domain_registrar_start, $domain_registrar_stop);
-		} elseif ( contains($whois, array('Registrar: ')) && contains($whois, array('Registrar IANA ID: ')) ) {
+		} elseif ( gearside_contains($whois, array('Registrar: ')) && gearside_contains($whois, array('Registrar IANA ID: ')) ) {
 			$domain_registrar_start = strpos($whois, "Registrar: ")+11;
 			$domain_registrar_stop = strpos($whois, "Registrar IANA ID: ")-$domain_registrar_start;
 			$domain_registrar = substr($whois, $domain_registrar_start, $domain_registrar_stop);
-		} elseif ( contains($whois, array('Registrar: ')) && contains($whois, array('Registrar IANA ID: ')) ) {
+		} elseif ( gearside_contains($whois, array('Registrar: ')) && gearside_contains($whois, array('Registrar IANA ID: ')) ) {
 			$domain_registrar_start = strpos($whois, "Registrar: ")+11;
 			$domain_registrar_stop = strpos($whois, "Registrar IANA ID: ")-$domain_registrar_start;
 			$domain_registrar = substr($whois, $domain_registrar_start, $domain_registrar_stop);
-		} elseif ( contains($whois, array('Sponsoring Registrar:')) && contains($whois, array('Sponsoring Registrar IANA ID:')) ) {
+		} elseif ( gearside_contains($whois, array('Sponsoring Registrar:')) && gearside_contains($whois, array('Sponsoring Registrar IANA ID:')) ) {
 			$domain_registrar_start = strpos($whois, "Sponsoring Registrar:")+21;
 			$domain_registrar_stop = strpos($whois, "Sponsoring Registrar IANA ID:")-$domain_registrar_start;
 			$domain_registrar = substr($whois, $domain_registrar_start, $domain_registrar_stop);
-		} elseif ( contains($whois, array('Registrar:')) && contains($whois, array('Number: ')) ) {
+		} elseif ( gearside_contains($whois, array('Registrar:')) && gearside_contains($whois, array('Number: ')) ) {
 			$domain_registrar_start = strpos($whois, "Registrar:")+17;
 			$domain_registrar_stop = strpos($whois, "Number: ")-$domain_registrar_start;
 			$domain_registrar = substr($whois, $domain_registrar_start, $domain_registrar_stop);
-		} elseif ( contains($whois, array('Registrar:')) && contains($whois, array('URL:')) ) { //co.uk
+		} elseif ( gearside_contains($whois, array('Registrar:')) && gearside_contains($whois, array('URL:')) ) { //co.uk
 			$domain_registrar_start = strpos($whois, "Registrar: ")+11;
 			$domain_registrar_stop = strpos($whois, "URL: ")-$domain_registrar_start;
 			$domain_registrar = substr($whois, $domain_registrar_start, $domain_registrar_stop);
@@ -292,7 +292,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 		//Get Reseller Name
 		$domain_reseller = '';
-		if ( contains($whois, array('Reseller: ')) && contains($whois, array('Domain Status: ')) ) {
+		if ( gearside_contains($whois, array('Reseller: ')) && gearside_contains($whois, array('Domain Status: ')) ) {
 			$reseller1 = strpos($whois, 'Reseller: ');
 			$reseller2 = strpos($whois, 'Reseller: ', $reseller1 + strlen('Reseller: '));
 			if ( $reseller2 ) {
@@ -322,23 +322,23 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 
 		//Get last modified filename and date
-		$dir = glob_r( get_template_directory() . '/*');
+		$dir = gearside_glob_r( get_template_directory() . '/*');
 		$last_date = 0;
 		$skip_files = array();
 
 		foreach( $dir as $file ) {
 			if( is_file($file) ) {
 				$mod_date = filemtime($file);
-				if ( $mod_date > $last_date && !contains(basename($file), $skip_files) ) {
+				if ( $mod_date > $last_date && !gearside_contains(basename($file), $skip_files) ) {
 					$last_date = $mod_date;
 					$last_filename = basename($file);
 					$last_file_path = str_replace(get_template_directory(), '', dirname($file)) . '/' . $last_filename;
 				}
 			}
 		}
-		$nebula_size = foldersize(get_template_directory());
+		$nebula_size = gearside_foldersize(get_template_directory());
 		$upload_dir = wp_upload_dir();
-		$uploads_size = foldersize($upload_dir['basedir']);
+		$uploads_size = gearside_foldersize($upload_dir['basedir']);
 
 		$secureServer = '';
 		if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443 ) {
@@ -434,9 +434,9 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 
 	//Search theme or plugin files via Gearside Developer Metabox
-	add_action('wp_ajax_search_theme_files', 'search_theme_files');
-	add_action('wp_ajax_nopriv_search_theme_files', 'search_theme_files');
-	function search_theme_files() {
+	add_action('wp_ajax_gearside_search_theme_files', 'gearside_search_theme_files');
+	add_action('wp_ajax_nopriv_gearside_search_theme_files', 'gearside_search_theme_files');
+	function gearside_search_theme_files() {
 		if ( strlen($_POST['data'][0]['searchData']) < 3 ) {
 			echo '<p><strong>Error:</strong> Minimum 3 characters needed to search!</p>';
 			die();
@@ -458,7 +458,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 		$file_counter = 0;
 		$instance_counter = 0;
-		foreach ( glob_r($dirpath . '/*') as $file ) {
+		foreach ( gearside_glob_r($dirpath . '/*') as $file ) {
 			$counted = 0;
 			if ( is_file($file) ) {
 			    if ( strpos(basename($file), $_POST['data'][0]['searchData']) !== false ) {
@@ -469,7 +469,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 				$skipExtensions = array('.jpg', '.jpeg', '.png', '.gif', '.ico', '.tiff', '.psd', '.ai',  '.apng', '.bmp', '.otf', '.ttf', '.ogv', '.flv', '.fla', '.mpg', '.mpeg', '.avi', '.mov', '.woff', '.eot', '.mp3', '.mp4', '.wmv', '.wma', '.aiff', '.zip', '.zipx', '.rar', '.exe', '.dmg', '.swf', '.pdf', '.pdfx', '.pem');
 				$skipFilenames = array('error_log');
-			    if ( !contains(basename($file), $skipExtensions) && !contains(basename($file), $skipFilenames) ) {
+			    if ( !gearside_contains(basename($file), $skipExtensions) && !gearside_contains(basename($file), $skipFilenames) ) {
 				    foreach ( file($file) as $lineNumber => $line ) {
 				        if ( stripos($line, $_POST['data'][0]['searchData']) !== false ) {
 				            $actualLineNumber = $lineNumber+1;
@@ -509,7 +509,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 
 	 //Get the full URL. Not intended for secure use ($_SERVER var can be manipulated by client/server).
-	function nebula_requested_url($host="HTTP_HOST") { //Can use "SERVER_NAME" as an alternative to "HTTP_HOST".
+	function gearside_requested_url($host="HTTP_HOST") { //Can use "SERVER_NAME" as an alternative to "HTTP_HOST".
 		$protocol = ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443 ) ? 'https' : 'http';
 		$full_url = $protocol . '://' . $_SERVER["$host"] . $_SERVER["REQUEST_URI"];
 		return $full_url;
@@ -517,9 +517,9 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 
 	//Separate a URL into it's components.
-	function nebula_url_components($segment="all", $url=null) {
+	function gearside_url_components($segment="all", $url=null) {
 		if ( !$url ) {
-			$url = nebula_requested_url();
+			$url = gearside_requested_url();
 		}
 
 		$url_compontents = parse_url($url);
@@ -597,7 +597,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 			case ('file') : //Filename will be just the filename/extension.
 			case ('filename') :
-				if ( contains(basename($url_compontents['path']), array('.')) ) {
+				if ( gearside_contains(basename($url_compontents['path']), array('.')) ) {
 					return basename($url_compontents['path']);
 				} else {
 					return false;
@@ -605,7 +605,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 				break;
 
 			case ('path') : //Path should be just the path without the filename/extension.
-				if ( contains(basename($url_compontents['path']), array('.')) ) { //@TODO "Nebula" 0: This will possibly give bad data if the directory name has a "." in it
+				if ( gearside_contains(basename($url_compontents['path']), array('.')) ) { //@TODO "Nebula" 0: This will possibly give bad data if the directory name has a "." in it
 					return str_replace(basename($url_compontents['path']), '', $url_compontents['path']);
 				} else {
 					return $url_compontents['path'];
@@ -625,9 +625,9 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 
 
 	//Traverse multidimensional arrays
-	function in_array_r($needle, $haystack, $strict = true) {
+	function gearside_in_array_r($needle, $haystack, $strict = true) {
 	    foreach ($haystack as $item) {
-	        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+	        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && gearside_in_array_r($needle, $item, $strict))) {
 	            return true;
 	        }
 	    }
@@ -635,16 +635,16 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 	}
 
 	//Recursive Glob
-	function glob_r($pattern, $flags = 0) {
+	function gearside_glob_r($pattern, $flags = 0) {
 	    $files = glob($pattern, $flags);
 	    foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
-	        $files = array_merge($files, glob_r($dir . '/' . basename($pattern), $flags));
+	        $files = array_merge($files, gearside_glob_r($dir . '/' . basename($pattern), $flags));
 	    }
 	    return $files;
 	}
 
 	//Add up the filesizes of files in a directory (and it's sub-directories)
-	function foldersize($path) {
+	function gearside_foldersize($path) {
 		$total_size = 0;
 		$files = scandir($path);
 		$cleanPath = rtrim($path, '/') . '/';
@@ -652,7 +652,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 			if ($t<>"." && $t<>"..") {
 				$currentFile = $cleanPath . $t;
 				if (is_dir($currentFile)) {
-					$size = foldersize($currentFile);
+					$size = gearside_foldersize($currentFile);
 					$total_size += $size;
 				} else {
 					$size = filesize($currentFile);
@@ -664,7 +664,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 	}
 
 	//Checks to see if an array contains a string.
-	function contains($str, array $arr) {
+	function gearside_contains($str, array $arr) {
 	    foreach( $arr as $a ) {
 	        if ( stripos($str, $a) !== false ) {
 	        	return true;
