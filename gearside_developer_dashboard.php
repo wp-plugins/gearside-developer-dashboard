@@ -3,7 +3,7 @@
 Plugin Name: Gearside Developer Dashboard
 Plugin URI: http://gearside.com/wordpress-developer-information-dashboard/
 Description: Developer Metaboxes for server information and TODO Manager for the WordPress Admin Dashboard.
-Version: 1.0.2
+Version: 1.0.5
 Author: Chris Blakley
 Author URI: http://gearside.com/
 License: GPL2
@@ -349,7 +349,9 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 			$alldomains = explode(".", $url);
 			return $alldomains[count($alldomains)-2] . "." . $alldomains[count($alldomains)-1];
 		}
-		$dnsrecord = ( function_exists('gethostname') ) ? dns_get_record(top_domain_name(gethostname()), DNS_NS) : '';
+		if ( function_exists('gethostname') ){
+			$dnsrecord = ( dns_get_record(top_domain_name(gethostname()), DNS_NS) ) ? dns_get_record(top_domain_name(gethostname()), DNS_NS) : '';
+		}
 
 		function initial_install_date(){
 			$install_date = '<strong>' . date("F j, Y", getlastmod()) . '</strong> <small>@</small> <strong>' . date("g:ia", getlastmod()) . '</strong>';
@@ -372,9 +374,7 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 			$upload_max = '';
 		}
 
-		if ( ini_get('safe_mode') ) {
-			$safe_mode = '<small><strong><em>Safe Mode</em></strong></small>';
-		}
+		$safe_mode = ( ini_get('safe_mode') ) ? '<small><strong><em>Safe Mode</em></strong></small>': '';
 
 		echo '<div id="testloadcon" style="pointer-events: none; opacity: 0; visibility: hidden; display: none;"></div>';
 		echo '<script id="testloadscript">
@@ -415,9 +415,9 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 			}
 			echo '<li><i class="fa fa-upload fa-fw"></i> Server IP: <strong><a href="http://whatismyipaddress.com/ip/' . $_SERVER['SERVER_ADDR'] . '" target="_blank">' . $_SERVER['SERVER_ADDR'] . '</a></strong> ' . $secureServer . '</li>';
 			echo '<li><i class="fa ' . $php_os_icon . ' fa-fw"></i> Server OS: <strong>' . PHP_OS . '</strong> <small>(' . $_SERVER['SERVER_SOFTWARE'] . ')</small></li>';
-			echo '<li><i class="fa fa-wrench fa-fw"></i> PHP Version: <strong>' . phpversion() . '</strong> ' . $safe_mode . '</li>';
+			echo '<li><i class="fa fa-wrench fa-fw"></i> PHP Version: <strong>' . PHP_VERSION . '</strong> ' . $safe_mode . '</li>';
 			echo '<li><i class="fa fa-cogs fa-fw"></i> PHP Memory Limit: <strong>' . WP_MEMORY_LIMIT . '</strong> ' . $safe_mode . '</li>';
-			echo '<li><i class="fa fa-database fa-fw"></i> MySQL Version: <strong>' . mysql_get_server_info() . '</strong></li>';
+			echo ( mysql_get_server_info() ) ? '<li><i class="fa fa-database fa-fw"></i> MySQL Version: <strong>' . mysql_get_server_info() . '</strong></li>' : '';
 			echo '<li><i class="fa fa-code"></i> Theme directory size: <strong>' . round($nebula_size/1048576, 2) . 'mb</strong> </li>';
 			echo '<li><i class="fa fa-picture-o"></i> Uploads directory size: <strong>' . round($uploads_size/1048576, 2) . 'mb</strong> ' . $upload_max . '</li>';
 			echo '<li><i class="fa fa-clock-o fa-fw"></i> <span title="' . get_home_url() . '" style="cursor: help;">Homepage</span> load time: <a href="http://developers.google.com/speed/pagespeed/insights/?url=' . home_url('/') . '" target="_blank" title="Time is specific to your current environment and therefore may be faster or slower than average."><strong class="loadtime" style="visibility: hidden;"><i class="fa fa-spinner fa-fw fa-spin"></i></strong></a> <i class="slowicon fa" style="color: maroon;"></i></li>';
