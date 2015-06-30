@@ -3,7 +3,7 @@ Contributors: GreatBlakes
 Donate link: http://gearside.com/wordpress-developer-information-dashboard/
 Tags: developer, information, domain, registrar, hostname, server, version, speed, search, todo, manager
 Requires at least: 3.0.1
-Tested up to: 4.0
+Tested up to: 4.2
 Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -40,6 +40,8 @@ The developer info does it's best to detect things that aren't consistent across
 == Screenshots ==
 
 1. screenshot-1.png
+1. screenshot-2.png
+1. screenshot-3.png
 
 == Changelog ==
 
