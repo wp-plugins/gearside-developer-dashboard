@@ -3,7 +3,7 @@
 Plugin Name: Gearside Developer Dashboard
 Plugin URI: http://gearside.com/wordpress-developer-information-dashboard/
 Description: Developer Metaboxes for server information and TODO Manager for the WordPress Admin Dashboard.
-Version: 1.0.7
+Version: 1.0.71
 Author: Chris Blakley
 Author URI: http://gearside.com/
 License: GPL2
