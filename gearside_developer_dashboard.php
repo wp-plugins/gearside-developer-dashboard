@@ -3,7 +3,7 @@
 Plugin Name: Gearside Developer Dashboard
 Plugin URI: http://gearside.com/wordpress-developer-information-dashboard/
 Description: Developer Metaboxes for server information and TODO Manager for the WordPress Admin Dashboard.
-Version: 1.0.6
+Version: 1.0.61
 Author: Chris Blakley
 Author URI: http://gearside.com/
 License: GPL2
@@ -375,12 +375,9 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 			$upload_max = '';
 		}
 
-		if ( function_exists( 'mysqli_connect' ) ){
-			if ( version_compare( PHP_VERSION, '5.5', '>=') ){
-				$mysql_version = mysqli_get_server_info();
-			} else {
-				$mysql_version = mysql_get_server_info();
-			}
+		if ( function_exists('mysqli_connect') ){
+			$mysqli_connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD);
+			$mysql_version = mysqli_get_server_info($mysqli_connect);
 		}
 
 		$safe_mode = ( ini_get('safe_mode') ) ? '<small><strong><em>Safe Mode</em></strong></small>': '';
