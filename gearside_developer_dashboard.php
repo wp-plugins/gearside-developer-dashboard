@@ -3,7 +3,7 @@
 Plugin Name: Gearside Developer Dashboard
 Plugin URI: http://gearside.com/wordpress-developer-information-dashboard/
 Description: Developer Metaboxes for server information and TODO Manager for the WordPress Admin Dashboard.
-Version: 1.0.61
+Version: 1.0.7
 Author: Chris Blakley
 Author URI: http://gearside.com/
 License: GPL2
@@ -351,7 +351,9 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 		}
 
 		if ( function_exists('gethostname') ){
+			set_error_handler(function() { /* ignore errors */ });
 			$dnsrecord = ( dns_get_record(top_domain_name(gethostname()), DNS_NS) ) ? dns_get_record(top_domain_name(gethostname()), DNS_NS) : '';
+			restore_error_handler();
 		}
 
 		function initial_install_date(){
@@ -415,9 +417,12 @@ if ( class_exists('Gearside_Developer_Dashboard') ) {
 			echo '<li><i class="fa fa-info-circle fa-fw"></i> <a href="http://whois.domaintools.com/' . $_SERVER['SERVER_NAME'] . '" target="_blank" title="WHOIS Lookup">Domain</a>: <strong>' . $_SERVER['SERVER_NAME'] . '</strong>' . $domain_exp_html . '</li>';
 
 			echo $domain_registrar_html;
-
-			if ( function_exists('gethostname') && !empty($dnsrecord) ) {
-				echo '<li><i class="fa fa-hdd-o fa-fw"></i> Host: <strong>' . top_domain_name(gethostname()) . '</strong> <small>(' . top_domain_name($dnsrecord[0]['target']) . ')</small></li>';
+			if ( function_exists('gethostname') ) {
+				echo '<li><i class="fa fa-hdd-o fa-fw"></i> Host: <strong>' . top_domain_name(gethostname()) . '</strong>';
+				if ( !empty($dnsrecord[0]['target']) ){
+					echo ' <small>(' . top_domain_name($dnsrecord[0]['target']) . ')</small>';
+				}
+				echo '</li>';
 			}
 			echo '<li><i class="fa fa-upload fa-fw"></i> Server IP: <strong><a href="http://whatismyipaddress.com/ip/' . $_SERVER['SERVER_ADDR'] . '" target="_blank">' . $_SERVER['SERVER_ADDR'] . '</a></strong> ' . $secureServer . '</li>';
 			echo '<li><i class="fa ' . $php_os_icon . ' fa-fw"></i> Server OS: <strong>' . PHP_OS . '</strong> <small>(' . $_SERVER['SERVER_SOFTWARE'] . ')</small></li>';
